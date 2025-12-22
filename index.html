@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sigma Engineering - Site Survey Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -16,21 +17,111 @@
             background: linear-gradient(135deg, #0c4a6e 0%, #075985 50%, #0369a1 100%);
             padding: 20px;
             min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/lightpaperfibers.png');
+            opacity: 0.05;
+            z-index: -1;
         }
         
         .container {
             max-width: 1000px;
             margin: 0 auto;
             background: white;
-            border-radius: 16px;
+            border-radius: 20px;
             box-shadow: 0 25px 70px rgba(0,0,0,0.4);
             overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .floating-contact-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .contact-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-btn:hover::after {
+            transform: scale(1);
+        }
+        
+        .contact-btn.whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+        
+        .contact-btn.email {
+            background: linear-gradient(135deg, #EA4335, #D14836);
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+        
+        .contact-tooltip {
+            position: absolute;
+            right: 70px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .contact-btn:hover .contact-tooltip {
+            opacity: 1;
+            transform: translateX(0);
         }
         
         .header {
             background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
             color: white;
-            padding: 40px 30px;
+            padding: 40px 30px 30px;
             position: relative;
             overflow: hidden;
         }
@@ -46,15 +137,33 @@
             border-radius: 50%;
         }
         
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+        }
+        
         .logo-container {
             text-align: center;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
         
         .logo-container img {
-            max-width: 450px;
+            max-width: 400px;
             height: auto;
             filter: brightness(0) invert(1);
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-container:hover img {
+            transform: scale(1.02);
         }
         
         .header-content {
@@ -66,14 +175,34 @@
         .header h1 {
             font-size: 32px;
             margin-bottom: 8px;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-weight: 800;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, #ffffff, #f0f9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 0.5px;
         }
         
         .header p {
-            font-size: 16px;
+            font-size: 18px;
             opacity: 0.95;
             font-weight: 500;
+            color: #e0f2fe;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .header-subtitle {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            margin-top: 15px;
+            font-weight: 600;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            backdrop-filter: blur(5px);
         }
         
         .form-content {
@@ -82,18 +211,27 @@
         
         .progress-bar {
             width: 100%;
-            height: 6px;
+            height: 8px;
             background: #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #f59e0b, #d97706);
+            background: linear-gradient(90deg, #f59e0b, #d97706, #f59e0b);
+            background-size: 200% 100%;
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+            animation: shimmer 2s infinite linear;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
         
         .section {
@@ -102,37 +240,49 @@
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .section-title {
             font-size: 22px;
             color: #0c4a6e;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding-bottom: 12px;
             border-bottom: 3px solid #f59e0b;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b, transparent);
         }
         
         .section-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, #f59e0b, #d97706);
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
             font-size: 16px;
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         label {
@@ -141,6 +291,7 @@
             color: #1e293b;
             font-weight: 600;
             font-size: 14px;
+            letter-spacing: 0.3px;
         }
         
         label .required {
@@ -155,13 +306,14 @@
         select,
         textarea {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 15px;
             transition: all 0.3s;
             font-family: inherit;
             background: #f8fafc;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
         
         input:focus,
@@ -170,136 +322,245 @@
             outline: none;
             border-color: #0c4a6e;
             background: white;
-            box-shadow: 0 0 0 3px rgba(12, 74, 110, 0.1);
+            box-shadow: 0 0 0 4px rgba(12, 74, 110, 0.15), inset 0 2px 4px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
         }
         
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 25px;
         }
         
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
+            gap: 25px;
         }
         
         .dynamic-section {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
             border: 2px solid #e2e8f0;
             position: relative;
-            transition: all 0.3s;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         
         .dynamic-section:hover {
             border-color: #0c4a6e;
-            box-shadow: 0 4px 12px rgba(12, 74, 110, 0.1);
+            box-shadow: 0 8px 25px rgba(12, 74, 110, 0.15);
+            transform: translateY(-5px);
         }
         
         .dynamic-section h4 {
             color: #0c4a6e;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             font-size: 18px;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dynamic-section h4::before {
+            content: '⚙️';
+            font-size: 20px;
         }
         
         .btn-add {
             background: linear-gradient(135deg, #0c4a6e, #075985);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 15px;
             font-weight: 600;
             transition: all 0.3s;
             margin-top: 10px;
-            box-shadow: 0 4px 12px rgba(12, 74, 110, 0.3);
+            box-shadow: 0 6px 20px rgba(12, 74, 110, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            width: fit-content;
         }
         
         .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(12, 74, 110, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(12, 74, 110, 0.4);
         }
         
         .btn-remove {
             background: #dc2626;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 10px 18px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             font-weight: 600;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
         }
         
         .btn-remove:hover {
             background: #b91c1c;
             transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(220, 38, 38, 0.4);
         }
         
         .note-section {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 5px solid #f59e0b;
-            padding: 25px;
-            margin-top: 35px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+            border-left: 6px solid #f59e0b;
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .note-section::before {
+            content: '📋';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 60px;
+            opacity: 0.2;
         }
         
         .note-section h3 {
             color: #92400e;
-            margin-bottom: 15px;
-            font-size: 20px;
+            margin-bottom: 20px;
+            font-size: 22px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .note-section p {
             color: #78350f;
             line-height: 1.8;
-            font-size: 14px;
+            font-size: 15px;
+            position: relative;
+            z-index: 1;
         }
         
         .note-section strong {
             color: #92400e;
         }
         
+        .contact-info-box {
+            background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(12, 74, 110, 0.3);
+        }
+        
+        .contact-info-item {
+            text-align: center;
+            flex: 1;
+            padding: 0 20px;
+        }
+        
+        .contact-info-item i {
+            font-size: 28px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .contact-info-item h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #e0f2fe;
+        }
+        
+        .contact-info-item p {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .contact-info-item a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .contact-info-item a:hover {
+            color: #f59e0b;
+            transform: translateY(-2px);
+        }
+        
         .submit-btn {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
             border: none;
-            padding: 18px 40px;
-            border-radius: 10px;
+            padding: 20px 45px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 18px;
             font-weight: 700;
             width: 100%;
-            margin-top: 25px;
-            transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            margin-top: 35px;
+            transition: all 0.4s;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.7s;
+        }
+        
+        .submit-btn:hover::after {
+            left: 100%;
         }
         
         .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.5);
         }
         
         .submit-btn:disabled {
             background: #94a3b8;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
+        }
+        
+        .submit-btn i {
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .submit-btn:hover i {
+            transform: translateX(5px);
         }
         
         .loading-overlay {
@@ -309,28 +570,39 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 9999;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
         
         .loading-content {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
+            background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+            padding: 50px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            color: white;
+            max-width: 400px;
+            width: 90%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
         
         .spinner {
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #0c4a6e;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top: 4px solid #f59e0b;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
         }
         
         @keyframes spin {
@@ -340,33 +612,47 @@
         
         .success-message {
             display: none;
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
             text-align: center;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .error-message {
             display: none;
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
             text-align: center;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+            animation: slideUp 0.5s ease;
         }
         
         .field-help {
             font-size: 12px;
             color: #64748b;
-            margin-top: 5px;
+            margin-top: 8px;
             font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .field-help i {
+            color: #0c4a6e;
         }
         
         @media (max-width: 768px) {
@@ -379,7 +665,7 @@
             }
             
             .header {
-                padding: 30px 20px;
+                padding: 30px 20px 25px;
             }
             
             .logo-container img {
@@ -389,10 +675,70 @@
             .header h1 {
                 font-size: 24px;
             }
+            
+            .contact-info-box {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .contact-info-item {
+                padding: 15px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                width: 100%;
+            }
+            
+            .contact-info-item:last-child {
+                border-bottom: none;
+            }
+            
+            .floating-contact-buttons {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .contact-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .header p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .submit-btn {
+                padding: 18px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="floating-contact-buttons">
+        <a href="https://wa.me/923066418556?text=Hello%20Sigma%20Engineering!%20I%20have%20a%20query%20about%20the%20site%20survey." target="_blank" class="contact-btn whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <span class="contact-tooltip">Chat on WhatsApp</span>
+        </a>
+        <a href="mailto:thesigmaengineering@gmail.com?subject=Site%20Survey%20Query%20-%20Sigma%20Engineering&body=Dear%20Sigma%20Engineering%20Team,%0A%0AI%20have%20a%20query%20regarding%20the%20site%20survey%20form." target="_blank" class="contact-btn email">
+            <i class="fas fa-envelope"></i>
+            <span class="contact-tooltip">Send Email</span>
+        </a>
+    </div>
+
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
             <div class="spinner"></div>
@@ -404,11 +750,13 @@
     <div class="container">
         <div class="header">
             <div class="logo-container">
-                <img src="https://i.imgur.com/placeholder.png" alt="Sigma Engineering" onerror="this.style.display='none'; document.querySelector('.header-content h1').style.marginTop='0'">
+                <!-- Replace this with your actual logo path from GitHub -->
+                <img src="https://raw.githubusercontent.com/your-username/your-repo/main/Group%208.png" alt="Sigma Engineering" onerror="this.onerror=null; this.src='https://i.imgur.com/placeholder.png'; this.style.maxWidth='300px'">
             </div>
             <div class="header-content">
                 <h1>Site Survey Form</h1>
-                <p>PV Genset Controller</p>
+                <p>Turning Ideas Into Action</p>
+                <div class="header-subtitle">PV Genset Controller</div>
             </div>
         </div>
         
@@ -428,12 +776,12 @@
                         <div class="form-group">
                             <label>Site Name <span class="required">*</span></label>
                             <input type="text" name="siteName" required>
-                            <div class="field-help">Enter the official site name</div>
+                            <div class="field-help"><i class="fas fa-info-circle"></i> Enter the official site name</div>
                         </div>
                         <div class="form-group">
                             <label>Site Location <span class="required">*</span></label>
                             <input type="text" name="siteLocation" required>
-                            <div class="field-help">Complete address with city</div>
+                            <div class="field-help"><i class="fas fa-map-marker-alt"></i> Complete address with city</div>
                         </div>
                     </div>
                 </div>
@@ -574,9 +922,28 @@
                     </div>
                 </div>
 
+                <!-- Contact Information -->
+                <div class="contact-info-box">
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <h4>Email Us</h4>
+                        <p><a href="mailto:thesigmaengineering@gmail.com">thesigmaengineering@gmail.com</a></p>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <h4>WhatsApp</h4>
+                        <p><a href="https://wa.me/923066418556" target="_blank">+92-306-6418556</a></p>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-headset"></i>
+                        <h4>Need Help?</h4>
+                        <p>Contact Support</p>
+                    </div>
+                </div>
+
                 <!-- Important Note -->
                 <div class="note-section">
-                    <h3>📋 Important - Required Documents</h3>
+                    <h3><i class="fas fa-exclamation-circle"></i> Important - Required Documents</h3>
                     <p>
                         <strong>Kindly share the following documents/pictures:</strong><br><br>
                         
@@ -597,15 +964,19 @@
                 </div>
 
                 <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
                     ✅ Survey submitted successfully! We will contact you soon.
                 </div>
                 
                 <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
                     ❌ There was an error submitting the form. Please try again or contact us directly.
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="submit-btn" id="submitBtn">Submit Survey Form</button>
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Submit Survey Form <i class="fas fa-paper-plane"></i>
+                </button>
             </form>
         </div>
     </div>
@@ -737,6 +1108,7 @@
             
             // Show loading
             submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Submitting... <i class="fas fa-spinner fa-spin"></i>';
             loadingOverlay.style.display = 'flex';
             
             // Collect form data
@@ -775,8 +1147,12 @@
                     loadingOverlay.style.display = 'none';
                     successMessage.style.display = 'block';
                     submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Submit Survey Form <i class="fas fa-paper-plane"></i>';
                     
-                    // Reset form after 3 seconds
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Reset form after 5 seconds
                     setTimeout(() => {
                         this.reset();
                         document.getElementById('transformersContainer').innerHTML = '';
@@ -784,7 +1160,7 @@
                         document.getElementById('invertersContainer').innerHTML = '';
                         updateProgress();
                         successMessage.style.display = 'none';
-                    }, 3000);
+                    }, 5000);
                 }, 2000);
                 
             } catch (error) {
@@ -792,6 +1168,10 @@
                 loadingOverlay.style.display = 'none';
                 errorMessage.style.display = 'block';
                 submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Survey Form <i class="fas fa-paper-plane"></i>';
+                
+                // Scroll to error message
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
                 
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
@@ -801,7 +1181,19 @@
 
         // Initialize
         updateProgress();
+        
+        // Add floating buttons animation
+        document.querySelectorAll('.contact-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.querySelector('.contact-tooltip').style.opacity = '1';
+                this.querySelector('.contact-tooltip').style.transform = 'translateX(0)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.querySelector('.contact-tooltip').style.opacity = '0';
+                this.querySelector('.contact-tooltip').style.transform = 'translateX(10px)';
+            });
+        });
     </script>
 </body>
 </html>
-
