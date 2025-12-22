@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sigma Engineering - Site Survey Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c4a6e 0%, #075985 50%, #0369a1 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+            color: white;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-container img {
+            max-width: 450px;
+            height: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .header-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+        
+        .form-content {
+            padding: 50px 40px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 22px;
+            color: #0c4a6e;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #f59e0b;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        label .required {
+            color: #dc2626;
+            margin-left: 3px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #f8fafc;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0c4a6e;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(12, 74, 110, 0.1);
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .dynamic-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .dynamic-section:hover {
+            border-color: #0c4a6e;
+            box-shadow: 0 4px 12px rgba(12, 74, 110, 0.1);
+        }
+        
+        .dynamic-section h4 {
+            color: #0c4a6e;
+            margin-bottom: 18px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .btn-add {
+            background: linear-gradient(135deg, #0c4a6e, #075985);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(12, 74, 110, 0.3);
+        }
+        
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(12, 74, 110, 0.4);
+        }
+        
+        .btn-remove {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-remove:hover {
+            background: #b91c1c;
+            transform: scale(1.05);
+        }
+        
+        .note-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid #f59e0b;
+            padding: 25px;
+            margin-top: 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+        
+        .note-section h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .note-section p {
+            color: #78350f;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        
+        .note-section strong {
+            color: #92400e;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 25px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+        
+        .submit-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #0c4a6e;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .error-message {
+            display: none;
+            background: #ef4444;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .field-help {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-content {
+                padding: 30px 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .logo-container img {
+                max-width: 280px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Submitting Your Survey...</h3>
+            <p>Please wait while we process your information</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://i.imgur.com/placeholder.png" alt="Sigma Engineering" onerror="this.style.display='none'; document.querySelector('.header-content h1').style.marginTop='0'">
+            </div>
+            <div class="header-content">
+                <h1>Site Survey Form</h1>
+                <p>PV Genset Controller Solution - Turning Ideas Into Action</p>
+            </div>
+        </div>
+        
+        <div class="form-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="surveyForm">
+                <!-- Basic Site Information -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">1</span>
+                        Site Information
+                    </h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Site Name <span class="required">*</span></label>
+                            <input type="text" name="siteName" required>
+                            <div class="field-help">Enter the official site name</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Site Location <span class="required">*</span></label>
+                            <input type="text" name="siteLocation" required>
+                            <div class="field-help">Complete address with city</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vendor Information -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">2</span>
+                        Vendor Information
+                    </h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Contact Person Name <span class="required">*</span></label>
+                            <input type="text" name="vendorContactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Person Number <span class="required">*</span></label>
+                            <input type="tel" name="vendorContactNumber" required placeholder="+92-XXX-XXXXXXX">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Contact Person Email</label>
+                            <input type="email" name="vendorEmail" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Vendor Company <span class="required">*</span></label>
+                            <input type="text" name="vendorCompany" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Company Location <span class="required">*</span></label>
+                        <input type="text" name="vendorCompanyLocation" required>
+                    </div>
+                </div>
+
+                <!-- Solution Type -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">3</span>
+                        Solution Required
+                    </h2>
+                    <div class="form-group">
+                        <label>Select Solution <span class="required">*</span></label>
+                        <select name="solutionType" required>
+                            <option value="">-- Select Solution --</option>
+                            <option value="PV Genset Controller">PV Genset Controller</option>
+                            <option value="PV Grid Hybrid System">PV Grid Hybrid System</option>
+                            <option value="Energy Management System">Energy Management System</option>
+                            <option value="Other">Other (Please Specify)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="otherSolutionGroup" style="display:none;">
+                        <label>Please Specify Solution</label>
+                        <input type="text" name="otherSolution" placeholder="Enter solution details">
+                    </div>
+                </div>
+
+                <!-- Transformers -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">4</span>
+                        Transformer Details
+                    </h2>
+                    <div class="form-group">
+                        <label>Number of Transformers <span class="required">*</span></label>
+                        <input type="number" name="numTransformers" min="0" value="0" required onchange="updateTransformers(this.value)">
+                    </div>
+                    <div id="transformersContainer"></div>
+                </div>
+
+                <!-- Generators -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">5</span>
+                        Generator Details
+                    </h2>
+                    <div class="form-group">
+                        <label>Number of Generators <span class="required">*</span></label>
+                        <input type="number" name="numGenerators" min="0" value="0" required onchange="updateGenerators(this.value)">
+                    </div>
+                    <div id="generatorsContainer"></div>
+                </div>
+
+                <!-- Inverters -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">6</span>
+                        Inverter Details
+                    </h2>
+                    <div class="form-group">
+                        <label>Total Number of Inverters <span class="required">*</span></label>
+                        <input type="number" name="numInverters" min="0" value="0" required onchange="updateInverters(this.value)">
+                    </div>
+                    <div id="invertersContainer"></div>
+                </div>
+
+                <!-- Distance Between Sources -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">7</span>
+                        Distance Between Sources (in meters)
+                    </h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>WAPDA Incoming to Generator Incoming</label>
+                            <input type="number" name="distWapdaToGen" placeholder="Distance in meters" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>WAPDA Incoming to Inverter</label>
+                            <input type="number" name="distWapdaToInverter" placeholder="Distance in meters" step="0.1">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Generator to Inverter</label>
+                            <input type="number" name="distGenToInverter" placeholder="Distance in meters" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Inverter to Other Inverter</label>
+                            <input type="number" name="distInverterToInverter" placeholder="Distance in meters" step="0.1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Distance Information</label>
+                        <textarea name="additionalDistances" rows="3" placeholder="Please specify any other distances between sources (e.g., Generator to Generator, specific panel distances, etc.)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">8</span>
+                        Additional Information
+                    </h2>
+                    <div class="form-group">
+                        <label>Any Special Requirements or Comments</label>
+                        <textarea name="additionalComments" rows="4" placeholder="Enter any special requirements, site constraints, or additional information that may be helpful for the survey"></textarea>
+                    </div>
+                </div>
+
+                <!-- Important Note -->
+                <div class="note-section">
+                    <h3>📋 Important - Required Documents</h3>
+                    <p>
+                        <strong>Kindly share the following documents/pictures:</strong><br><br>
+                        
+                        1️⃣ <strong>Single Line Diagram (SLD)</strong> - If available, please attach or email the electrical single line diagram of the site to help us understand the system architecture.<br><br>
+                        
+                        2️⃣ <strong>Incoming Breakers Pictures</strong> - Please provide clear photographs of ALL incoming breakers, especially showing:<br>
+                        &nbsp;&nbsp;&nbsp;• Front view of the breaker panel<br>
+                        &nbsp;&nbsp;&nbsp;• Wires attached on the incoming side<br>
+                        &nbsp;&nbsp;&nbsp;• Breaker rating labels (if visible)<br>
+                        &nbsp;&nbsp;&nbsp;• Current Transformer (CT) connections<br><br>
+                        
+                        3️⃣ <strong>Site Layout Photos</strong> - General pictures of the installation area (optional but helpful)<br><br>
+                        
+                        <strong>📧 Please email documents to:</strong> engineering@sigmaengineering.pk<br>
+                        <strong>📱 WhatsApp:</strong> +92-XXX-XXXXXXX<br><br>
+                        
+                        <em>These documents are crucial for accurate Current Transformer (CT) sizing, system design, and successful implementation.</em>
+                    </p>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    ✅ Survey submitted successfully! We will contact you soon.
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    ❌ There was an error submitting the form. Please try again or contact us directly.
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Survey Form</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide other solution field
+        document.querySelector('select[name="solutionType"]').addEventListener('change', function() {
+            const otherGroup = document.getElementById('otherSolutionGroup');
+            otherGroup.style.display = this.value === 'Other' ? 'block' : 'none';
+        });
+
+        // Update transformers
+        function updateTransformers(count) {
+            const container = document.getElementById('transformersContainer');
+            container.innerHTML = '';
+            for(let i = 1; i <= count; i++) {
+                const div = document.createElement('div');
+                div.className = 'dynamic-section';
+                div.innerHTML = `
+                    <h4>Transformer ${i}</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Capacity (KVA) <span class="required">*</span></label>
+                            <input type="text" name="transformerCapacity[]" placeholder="e.g., 500 KVA" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Incoming Breaker Rating <span class="required">*</span></label>
+                            <input type="text" name="transformerBreakerRating[]" placeholder="e.g., 630A" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Voltage Rating</label>
+                            <input type="text" name="transformerVoltage[]" placeholder="e.g., 11kV/400V">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+            updateProgress();
+        }
+
+        // Update generators
+        function updateGenerators(count) {
+            const container = document.getElementById('generatorsContainer');
+            container.innerHTML = '';
+            for(let i = 1; i <= count; i++) {
+                const div = document.createElement('div');
+                div.className = 'dynamic-section';
+                div.innerHTML = `
+                    <h4>Generator ${i}</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Capacity (KVA/KW) <span class="required">*</span></label>
+                            <input type="text" name="generatorCapacity[]" placeholder="e.g., 250 KVA" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Incoming Breaker Rating <span class="required">*</span></label>
+                            <input type="text" name="generatorBreakerRating[]" placeholder="e.g., 400A" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Brand/Model</label>
+                            <input type="text" name="generatorBrand[]" placeholder="e.g., Cummins, Perkins">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+            updateProgress();
+        }
+
+        // Update inverters
+        function updateInverters(count) {
+            const container = document.getElementById('invertersContainer');
+            container.innerHTML = '';
+            for(let i = 1; i <= count; i++) {
+                const div = document.createElement('div');
+                div.className = 'dynamic-section';
+                div.innerHTML = `
+                    <h4>Inverter ${i}</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Capacity (KW) <span class="required">*</span></label>
+                            <input type="text" name="inverterCapacity[]" placeholder="e.g., 50 KW" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Brand <span class="required">*</span></label>
+                            <input type="text" name="inverterBrand[]" placeholder="e.g., Huawei, SMA, Growatt" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Model Number</label>
+                            <input type="text" name="inverterModel[]" placeholder="Model/Serial">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+            updateProgress();
+        }
+
+        // Progress bar update
+        function updateProgress() {
+            const form = document.getElementById('surveyForm');
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let filled = 0;
+            
+            inputs.forEach(input => {
+                if(input.value.trim() !== '') filled++;
+            });
+            
+            const progress = (filled / inputs.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Listen to all input changes
+        document.getElementById('surveyForm').addEventListener('input', updateProgress);
+        document.getElementById('surveyForm').addEventListener('change', updateProgress);
+
+        // Form submission
+        document.getElementById('surveyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Show loading
+            submitBtn.disabled = true;
+            loadingOverlay.style.display = 'flex';
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Convert FormData to object
+            for (let [key, value] of formData.entries()) {
+                if (key.includes('[]')) {
+                    const cleanKey = key.replace('[]', '');
+                    if (!data[cleanKey]) data[cleanKey] = [];
+                    data[cleanKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Add timestamp
+            data.timestamp = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' });
+            
+            try {
+                // HERE YOU NEED TO ADD YOUR GOOGLE SHEETS WEB APP URL
+                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDzTR6Z0DoCHwAlGCOFlaQ22cgKSQ1DIQv0RJ4gzVaAd-8nUUH0sPfmt2zVppV-JI_/exec';
+                
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                // Show success (no-cors means we can't read response, so assume success)
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    submitBtn.disabled = false;
+                    
+                    // Reset form after 3 seconds
+                    setTimeout(() => {
+                        this.reset();
+                        document.getElementById('transformersContainer').innerHTML = '';
+                        document.getElementById('generatorsContainer').innerHTML = '';
+                        document.getElementById('invertersContainer').innerHTML = '';
+                        updateProgress();
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                loadingOverlay.style.display = 'none';
+                errorMessage.style.display = 'block';
+                submitBtn.disabled = false;
+                
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+        });
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
