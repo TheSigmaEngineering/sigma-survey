@@ -162,6 +162,7 @@
         .logo-container img {
             max-width: 400px;
             height: auto;
+            /* Removed filter to preserve original colors */
             transition: transform 0.3s ease;
         }
         
@@ -300,57 +301,6 @@
         label .required {
             color: #dc2626;
             margin-left: 3px;
-        }
-        
-        .input-with-unit {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        
-        .unit-selector {
-            display: flex;
-            margin-left: 10px;
-            background: #f1f5f9;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 2px solid #e2e8f0;
-            height: 50px;
-        }
-        
-        .unit-option {
-            padding: 0 15px;
-            background: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: #0c4a6e;
-            transition: all 0.3s;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .unit-option:hover {
-            background: #f1f5f9;
-        }
-        
-        .unit-option.active {
-            background: #0c4a6e;
-            color: white;
-        }
-        
-        .unit-input-container {
-            display: flex;
-            align-items: center;
-        }
-        
-        .unit-label {
-            margin-left: 10px;
-            font-weight: 600;
-            color: #0c4a6e;
-            min-width: 40px;
         }
         
         input[type="text"],
@@ -771,9 +721,7 @@
             .field-help,
             .section-icon,
             .section-title::after,
-            .dynamic-section:hover,
-            .unit-selector,
-            .unit-label {
+            .dynamic-section:hover {
                 display: none !important;
             }
             
@@ -864,12 +812,6 @@
                 font-size: 12px;
                 color: #666;
             }
-            
-            .value-with-unit::after {
-                content: attr(data-unit);
-                margin-left: 5px;
-                font-weight: normal;
-            }
         }
         
         .print-header,
@@ -934,17 +876,6 @@
                 width: 100%;
                 padding: 18px;
             }
-            
-            .input-with-unit {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .unit-selector {
-                margin-left: 0;
-                margin-top: 10px;
-                width: 100%;
-            }
         }
         
         @media (max-width: 480px) {
@@ -968,10 +899,6 @@
             .print-btn {
                 padding: 16px;
                 font-size: 16px;
-            }
-            
-            .grid-3 {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -1002,15 +929,15 @@
 
     <div class="container">
         <div class="header">
-            <div class="logo-container">
-                <img src="https://raw.githubusercontent.com/TheSigmaEngineering/sigma-survey/main/Group%208.png" 
-                     alt="Sigma Engineering">
-            </div>
-            <div class="header-content">
-                <h1>Site Survey Form</h1>
-                <div class="header-subtitle">PV Genset Controller</div>
-            </div>
-        </div>
+    <div class="logo-container">
+        <img src="https://raw.githubusercontent.com/TheSigmaEngineering/sigma-survey/main/Group%208.png" 
+             alt="Sigma Engineering">
+    </div>
+    <div class="header-content">
+        <h1>Site Survey Form</h1>
+        <div class="header-subtitle">PV Genset Controller</div>
+    </div>
+</div>
         
         <div class="form-content">
             <!-- Print Header (only shows when printing) -->
@@ -1132,584 +1059,364 @@
                     </h2>
                     <div class="form-group">
                         <label>Total Number of Inverters <span class="required">*</span></label>
-                            <input type="number" name="numInverters" min="0" value="0" required onchange="updateInverters(this.value)">
-                        </div>
-                        <div id="invertersContainer"></div>
+                        <input type="number" name="numInverters" min="0" value="0" required onchange="updateInverters(this.value)">
                     </div>
+                    <div id="invertersContainer"></div>
+                </div>
 
-                    <!-- Distance Between Sources -->
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="section-icon">7</span>
-                            Distance Between Sources (in meters)
-                        </h2>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>WAPDA Incoming to Generator Incoming</label>
-                                <input type="number" name="distWapdaToGen" placeholder="Distance in meters" step="0.1">
-                            </div>
-                            <div class="form-group">
-                                <label>WAPDA Incoming to Inverter</label>
-                                <input type="number" name="distWapdaToInverter" placeholder="Distance in meters" step="0.1">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>Generator to Inverter</label>
-                                <input type="number" name="distGenToInverter" placeholder="Distance in meters" step="0.1">
-                            </div>
-                            <div class="form-group">
-                                <label>Inverter to Other Inverter</label>
-                                <input type="number" name="distInverterToInverter" placeholder="Distance in meters" step="0.1">
-                            </div>
+                <!-- Distance Between Sources -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">7</span>
+                        Distance Between Sources (in meters)
+                    </h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>WAPDA Incoming to Generator Incoming</label>
+                            <input type="number" name="distWapdaToGen" placeholder="Distance in meters" step="0.1">
                         </div>
                         <div class="form-group">
-                            <label>Additional Distance Information</label>
-                            <textarea name="additionalDistances" rows="3" placeholder="Please specify any other distances between sources (e.g., Generator to Generator, specific panel distances, etc.)"></textarea>
+                            <label>WAPDA Incoming to Inverter</label>
+                            <input type="number" name="distWapdaToInverter" placeholder="Distance in meters" step="0.1">
                         </div>
                     </div>
-
-                    <!-- Additional Information -->
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="section-icon">8</span>
-                            Additional Information
-                        </h2>
+                    <div class="grid-2">
                         <div class="form-group">
-                            <label>Any Special Requirements or Comments</label>
-                            <textarea name="additionalComments" rows="4" placeholder="Enter any special requirements, site constraints, or additional information that may be helpful for the survey"></textarea>
+                            <label>Generator to Inverter</label>
+                            <input type="number" name="distGenToInverter" placeholder="Distance in meters" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Inverter to Other Inverter</label>
+                            <input type="number" name="distInverterToInverter" placeholder="Distance in meters" step="0.1">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Additional Distance Information</label>
+                        <textarea name="additionalDistances" rows="3" placeholder="Please specify any other distances between sources (e.g., Generator to Generator, specific panel distances, etc.)"></textarea>
+                    </div>
+                </div>
 
-                    <!-- Contact Information -->
-                    <div class="contact-info-box">
-                        <div class="contact-info-item">
-                            <i class="fas fa-envelope"></i>
-                            <h4>Email Us</h4>
-                            <p><a href="mailto:thesigmaengineering@gmail.com">thesigmaengineering@gmail.com</a></p>
-                        </div>
-                        <div class="contact-info-item">
-                            <i class="fab fa-whatsapp"></i>
-                            <h4>WhatsApp</h4>
-                            <p><a href="https://wa.me/923066418556" target="_blank">+92-306-6418556</a></p>
-                        </div>
-                        <div class="contact-info-item">
-                            <i class="fas fa-headset"></i>
-                            <h4>Need Help?</h4>
-                            <p>Contact Support</p>
-                        </div>
+                <!-- Additional Information -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <span class="section-icon">8</span>
+                        Additional Information
+                    </h2>
+                    <div class="form-group">
+                        <label>Any Special Requirements or Comments</label>
+                        <textarea name="additionalComments" rows="4" placeholder="Enter any special requirements, site constraints, or additional information that may be helpful for the survey"></textarea>
                     </div>
+                </div>
 
-                    <!-- Important Note -->
-                    <div class="note-section">
-                        <h3><i class="fas fa-exclamation-circle"></i> Important - Required Documents</h3>
-                        <p>
-                            <strong>Kindly share the following documents/pictures:</strong><br><br>
-                            
-                            1️⃣ <strong>Single Line Diagram (SLD)</strong> - If available, please attach or email the electrical single line diagram of the site to help us understand the system architecture.<br><br>
-                            
-                            2️⃣ <strong>Incoming Breakers Pictures</strong> - Please provide clear photographs of ALL incoming breakers, especially showing:<br>
-                            &nbsp;&nbsp;&nbsp;• Front view of the breaker panel<br>
-                            &nbsp;&nbsp;&nbsp;• Wires attached on the incoming side<br>
-                            &nbsp;&nbsp;&nbsp;• Breaker rating labels (if visible)<br>
-                            
-                            3️⃣ <strong>Site Layout Photos</strong> - General pictures of the installation area (optional but helpful)<br><br>
-                            
-                            <em>These documents are crucial for accurate Current Transformer (CT) sizing, system design, and successful implementation.</em>
-                        </p>
+                <!-- Contact Information -->
+                <div class="contact-info-box">
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <h4>Email Us</h4>
+                        <p><a href="mailto:thesigmaengineering@gmail.com">thesigmaengineering@gmail.com</a></p>
                     </div>
+                    <div class="contact-info-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <h4>WhatsApp</h4>
+                        <p><a href="https://wa.me/923066418556" target="_blank">+92-306-6418556</a></p>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-headset"></i>
+                        <h4>Need Help?</h4>
+                        <p>Contact Support</p>
+                    </div>
+                </div>
 
-                    <!-- Print Footer (only shows when printing) -->
-                    <div class="print-footer">
-                        <p>Sigma Engineering - Turning Ideas Into Action</p>
-                        <p>Contact: thesigmaengineering@gmail.com | +92-306-6418556</p>
-                        <p>This form was submitted electronically and printed for record keeping.</p>
-                    </div>
+                <!-- Important Note -->
+                <div class="note-section">
+                    <h3><i class="fas fa-exclamation-circle"></i> Important - Required Documents</h3>
+                    <p>
+                        <strong>Kindly share the following documents/pictures:</strong><br><br>
+                        
+                        1️⃣ <strong>Single Line Diagram (SLD)</strong> - If available, please attach or email the electrical single line diagram of the site to help us understand the system architecture.<br><br>
+                        
+                        2️⃣ <strong>Incoming Breakers Pictures</strong> - Please provide clear photographs of ALL incoming breakers, especially showing:<br>
+                        &nbsp;&nbsp;&nbsp;• Front view of the breaker panel<br>
+                        &nbsp;&nbsp;&nbsp;• Wires attached on the incoming side<br>
+                        &nbsp;&nbsp;&nbsp;• Breaker rating labels (if visible)<br>
+                        
+                        3️⃣ <strong>Site Layout Photos</strong> - General pictures of the installation area (optional but helpful)<br><br>
+                        
+                        <em>These documents are crucial for accurate Current Transformer (CT) sizing, system design, and successful implementation.</em>
+                    </p>
+                </div>
 
-                    <div class="success-message" id="successMessage">
-                        <i class="fas fa-check-circle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
-                        ✅ Survey submitted successfully! We will contact you soon.
-                    </div>
-                    
-                    <div class="error-message" id="errorMessage">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
-                        ❌ There was an error submitting the form. Please try again or contact us directly.
-                    </div>
+                <!-- Print Footer (only shows when printing) -->
+                <div class="print-footer">
+                    <p>Sigma Engineering - Turning Ideas Into Action</p>
+                    <p>Contact: thesigmaengineering@gmail.com | +92-306-6418556</p>
+                    <p>This form was submitted electronically and printed for record keeping.</p>
+                </div>
 
-                    <!-- Action Buttons -->
-                    <div class="action-buttons">
-                        <button type="submit" class="submit-btn" id="submitBtn">
-                            Submit Survey Form <i class="fas fa-paper-plane"></i>
-                        </button>
-                        <button type="button" class="print-btn" onclick="printForm()">
-                            <i class="fas fa-print"></i> Print
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
+                    ✅ Survey submitted successfully! We will contact you soon.
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i><br>
+                    ❌ There was an error submitting the form. Please try again or contact us directly.
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Submit Survey Form <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <button type="button" class="print-btn" onclick="printForm()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <script>
-            // Unit management functions
-            function setupUnitSelector(inputId, defaultUnit, unitOptions) {
-                const input = document.getElementById(inputId);
-                if (!input) return;
-                
-                const container = document.createElement('div');
-                container.className = 'unit-input-container';
-                
-                const originalInput = input.cloneNode(true);
-                originalInput.id = inputId + '_value';
-                originalInput.name = inputId + '_value';
-                
-                const unitLabel = document.createElement('span');
-                unitLabel.className = 'unit-label';
-                unitLabel.textContent = defaultUnit;
-                unitLabel.id = inputId + '_unitLabel';
-                
-                const unitInput = document.createElement('input');
-                unitInput.type = 'hidden';
-                unitInput.id = inputId + '_unit';
-                unitInput.name = inputId + '_unit';
-                unitInput.value = defaultUnit;
-                
-                container.appendChild(originalInput);
-                container.appendChild(unitLabel);
-                container.appendChild(unitInput);
-                
-                // Create unit selector if multiple options
-                if (unitOptions && unitOptions.length > 1) {
-                    const unitSelector = document.createElement('div');
-                    unitSelector.className = 'unit-selector';
-                    
-                    unitOptions.forEach(unit => {
-                        const unitOption = document.createElement('button');
-                        unitOption.type = 'button';
-                        unitOption.className = 'unit-option' + (unit === defaultUnit ? ' active' : '');
-                        unitOption.textContent = unit;
-                        unitOption.onclick = function() {
-                            // Update active state
-                            unitSelector.querySelectorAll('.unit-option').forEach(opt => {
-                                opt.classList.remove('active');
-                            });
-                            this.classList.add('active');
-                            
-                            // Update unit label and hidden input
-                            unitLabel.textContent = unit;
-                            unitInput.value = unit;
-                        };
-                        unitSelector.appendChild(unitOption);
-                    });
-                    
-                    container.appendChild(unitSelector);
+    <script>
+        // Show/hide other solution field
+        document.querySelector('select[name="solutionType"]').addEventListener('change', function() {
+            const otherGroup = document.getElementById('otherSolutionGroup');
+            otherGroup.style.display = this.value === 'Other' ? 'block' : 'none';
+        });
+
+        // Update transformers
+        function updateTransformers(count) {
+            const container = document.getElementById('transformersContainer');
+            container.innerHTML = '';
+            for(let i = 1; i <= count; i++) {
+                const div = document.createElement('div');
+                div.className = 'dynamic-section';
+                div.innerHTML = `
+                    <h4>Transformer ${i}</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Capacity (KVA) <span class="required">*</span></label>
+                            <input type="text" name="transformerCapacity[]" placeholder="e.g., 500 KVA" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Incoming Breaker Rating <span class="required">*</span></label>
+                            <input type="text" name="transformerBreakerRating[]" placeholder="e.g., 630A" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Voltage Rating</label>
+                            <input type="text" name="transformerVoltage[]" placeholder="e.g., 11kV/400V">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+            updateProgress();
+        }
+
+        // Update generators
+        function updateGenerators(count) {
+            const container = document.getElementById('generatorsContainer');
+            container.innerHTML = '';
+            for(let i = 1; i <= count; i++) {
+                const div = document.createElement('div');
+                div.className = 'dynamic-section';
+                div.innerHTML = `
+                    <h4>Generator ${i}</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Capacity (KVA/KW) <span class="required">*</span></label>
+                            <input type="text" name="generatorCapacity[]" placeholder="e.g., 250 KVA" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Incoming Breaker Rating <span class="required">*</span></label>
+                            <input type="text" name="generatorBreakerRating[]" placeholder="e.g., 400A" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Brand/Model</label>
+                            <input type="text" name="generatorBrand[]" placeholder="e.g., Cummins, Perkins">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+            updateProgress();
+        }
+
+        // Update inverters
+        function updateInverters(count) {
+            const container = document.getElementById('invertersContainer');
+            container.innerHTML = '';
+            for(let i = 1; i <= count; i++) {
+                const div = document.createElement('div');
+                div.className = 'dynamic-section';
+                div.innerHTML = `
+                    <h4>Inverter ${i}</h4>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Capacity (KW) <span class="required">*</span></label>
+                            <input type="text" name="inverterCapacity[]" placeholder="e.g., 50 KW" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Brand <span class="required">*</span></label>
+                            <input type="text" name="inverterBrand[]" placeholder="e.g., Huawei, SMA, Growatt" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Model Number</label>
+                            <input type="text" name="inverterModel[]" placeholder="Model/Serial">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+            updateProgress();
+        }
+
+        // Progress bar update
+        function updateProgress() {
+            const form = document.getElementById('surveyForm');
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let filled = 0;
+            
+            inputs.forEach(input => {
+                if(input.value.trim() !== '') filled++;
+            });
+            
+            const progress = (filled / inputs.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Listen to all input changes
+        document.getElementById('surveyForm').addEventListener('input', updateProgress);
+        document.getElementById('surveyForm').addEventListener('change', updateProgress);
+
+        // Print function
+        function printForm() {
+            // Update print date and form ID
+            document.getElementById('printDate').textContent = new Date().toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Generate a simple form ID
+            const formId = 'SE-' + Date.now().toString().slice(-8);
+            document.getElementById('formId').textContent = formId;
+            
+            // Trigger print
+            window.print();
+        }
+
+        // Form submission
+        document.getElementById('surveyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Submitting... <i class="fas fa-spinner fa-spin"></i>';
+            loadingOverlay.style.display = 'flex';
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Convert FormData to object
+            for (let [key, value] of formData.entries()) {
+                if (key.includes('[]')) {
+                    const cleanKey = key.replace('[]', '');
+                    if (!data[cleanKey]) data[cleanKey] = [];
+                    data[cleanKey].push(value);
+                } else {
+                    data[key] = value;
                 }
-                
-                input.parentNode.replaceChild(container, input);
             }
             
-            // Show/hide other solution field
-            document.querySelector('select[name="solutionType"]').addEventListener('change', function() {
-                const otherGroup = document.getElementById('otherSolutionGroup');
-                otherGroup.style.display = this.value === 'Other' ? 'block' : 'none';
-            });
-
-            // Update transformers with unit support
-            function updateTransformers(count) {
-                const container = document.getElementById('transformersContainer');
-                container.innerHTML = '';
-                for(let i = 1; i <= count; i++) {
-                    const div = document.createElement('div');
-                    div.className = 'dynamic-section';
-                    div.innerHTML = `
-                        <h4>Transformer ${i}</h4>
-                        <div class="grid-3">
-                            <div class="form-group">
-                                <label>Capacity <span class="required">*</span></label>
-                                <div class="unit-input-container">
-                                    <input type="number" name="transformerCapacity[]" placeholder="e.g., 500" required step="0.01" class="value-with-unit">
-                                    <span class="unit-label">KVA</span>
-                                    <input type="hidden" name="transformerCapacityUnit[]" value="KVA">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Incoming Breaker Rating <span class="required">*</span></label>
-                                <div class="unit-input-container">
-                                    <input type="number" name="transformerBreakerRating[]" placeholder="e.g., 630" required step="0.01" class="value-with-unit">
-                                    <span class="unit-label">A</span>
-                                    <input type="hidden" name="transformerBreakerRatingUnit[]" value="A">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Voltage Rating</label>
-                                <div class="unit-input-container">
-                                    <input type="text" name="transformerVoltage[]" placeholder="e.g., 11kV/400V" class="value-with-unit">
-                                    <span class="unit-label">V</span>
-                                    <input type="hidden" name="transformerVoltageUnit[]" value="V">
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                }
-                updateProgress();
-            }
-
-            // Update generators with unit support
-            function updateGenerators(count) {
-                const container = document.getElementById('generatorsContainer');
-                container.innerHTML = '';
-                for(let i = 1; i <= count; i++) {
-                    const div = document.createElement('div');
-                    div.className = 'dynamic-section';
-                    div.innerHTML = `
-                        <h4>Generator ${i}</h4>
-                        <div class="grid-3">
-                            <div class="form-group">
-                                <label>Capacity <span class="required">*</span></label>
-                                <div class="unit-input-container">
-                                    <input type="number" name="generatorCapacity[]" placeholder="e.g., 250" required step="0.01" class="value-with-unit">
-                                    <span class="unit-label">KVA</span>
-                                    <input type="hidden" name="generatorCapacityUnit[]" value="KVA">
-                                    <div class="unit-selector">
-                                        <button type="button" class="unit-option active" onclick="changeUnit(this, 'generatorCapacityUnit${i}', 'KVA')">KVA</button>
-                                        <button type="button" class="unit-option" onclick="changeUnit(this, 'generatorCapacityUnit${i}', 'KW')">KW</button>
-                                    </div>
-                                    <input type="hidden" name="generatorCapacityUnit[]" value="KVA" id="generatorCapacityUnit${i}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Incoming Breaker Rating <span class="required">*</span></label>
-                                <div class="unit-input-container">
-                                    <input type="number" name="generatorBreakerRating[]" placeholder="e.g., 400" required step="0.01" class="value-with-unit">
-                                    <span class="unit-label">A</span>
-                                    <input type="hidden" name="generatorBreakerRatingUnit[]" value="A">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Brand/Model</label>
-                                <input type="text" name="generatorBrand[]" placeholder="e.g., Cummins, Perkins">
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                }
-                updateProgress();
-            }
-
-            // Update inverters with unit support
-            function updateInverters(count) {
-                const container = document.getElementById('invertersContainer');
-                container.innerHTML = '';
-                for(let i = 1; i <= count; i++) {
-                    const div = document.createElement('div');
-                    div.className = 'dynamic-section';
-                    div.innerHTML = `
-                        <h4>Inverter ${i}</h4>
-                        <div class="grid-3">
-                            <div class="form-group">
-                                <label>Capacity <span class="required">*</span></label>
-                                <div class="unit-input-container">
-                                    <input type="number" name="inverterCapacity[]" placeholder="e.g., 50" required step="0.01" class="value-with-unit">
-                                    <span class="unit-label">KW</span>
-                                    <input type="hidden" name="inverterCapacityUnit[]" value="KW">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Brand <span class="required">*</span></label>
-                                <input type="text" name="inverterBrand[]" placeholder="e.g., Huawei, SMA, Growatt" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Model Number</label>
-                                <input type="text" name="inverterModel[]" placeholder="Model/Serial">
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                }
-                updateProgress();
-            }
-
-            // Function to change unit
-            function changeUnit(button, unitInputId, unit) {
-                const container = button.closest('.unit-input-container');
-                const unitButtons = container.querySelectorAll('.unit-option');
-                unitButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+            // Add timestamp
+            data.timestamp = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' });
+            
+            try {
+                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDzTR6Z0DoCHwAlGCOFlaQ22cgKSQ1DIQv0RJ4gzVaAd-8nUUH0sPfmt2zVppV-JI_/exec';
                 
-                const unitLabel = container.querySelector('.unit-label');
-                unitLabel.textContent = unit;
-                
-                const hiddenUnitInput = document.getElementById(unitInputId);
-                if (hiddenUnitInput) {
-                    hiddenUnitInput.value = unit;
-                }
-            }
-
-            // Progress bar update
-            function updateProgress() {
-                const form = document.getElementById('surveyForm');
-                const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
-                let filled = 0;
-                
-                inputs.forEach(input => {
-                    if(input.value.trim() !== '') filled++;
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
                 });
                 
-                const progress = (filled / inputs.length) * 100;
-                document.getElementById('progressFill').style.width = progress + '%';
-            }
-
-            // Listen to all input changes
-            document.getElementById('surveyForm').addEventListener('input', updateProgress);
-            document.getElementById('surveyForm').addEventListener('change', updateProgress);
-
-            // Print function
-            function printForm() {
-                // Update print date and form ID
-                document.getElementById('printDate').textContent = new Date().toLocaleString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                
-                // Generate a simple form ID
-                const formId = 'SE-' + Date.now().toString().slice(-8);
-                document.getElementById('formId').textContent = formId;
-                
-                // Add units to values for printing
-                document.querySelectorAll('.value-with-unit').forEach(input => {
-                    const container = input.closest('.unit-input-container');
-                    if (container) {
-                        const unit = container.querySelector('input[type="hidden"]')?.value || '';
-                        if (unit && input.value) {
-                            input.setAttribute('data-unit', unit);
-                            input.value = input.value + ' ' + unit;
-                        }
-                    }
-                });
-                
-                // Trigger print
-                window.print();
-                
-                // Restore original values after printing
+                // Show success (no-cors means we can't read response, so assume success)
                 setTimeout(() => {
-                    document.querySelectorAll('.value-with-unit').forEach(input => {
-                        if (input.hasAttribute('data-unit')) {
-                            const valueWithUnit = input.value;
-                            const unit = input.getAttribute('data-unit');
-                            const value = valueWithUnit.replace(' ' + unit, '');
-                            input.value = value;
-                            input.removeAttribute('data-unit');
-                        }
-                    });
-                }, 100);
-            }
-
-            // Enhanced form submission with unit data
-            document.getElementById('surveyForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const submitBtn = document.getElementById('submitBtn');
-                const loadingOverlay = document.getElementById('loadingOverlay');
-                const successMessage = document.getElementById('successMessage');
-                const errorMessage = document.getElementById('errorMessage');
-                
-                // Hide previous messages
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'none';
-                
-                // Show loading
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = 'Submitting... <i class="fas fa-spinner fa-spin"></i>';
-                loadingOverlay.style.display = 'flex';
-                
-                // Collect form data with units
-                const formData = new FormData(this);
-                const data = {};
-                
-                // Combine values with units
-                const valueFields = ['transformerCapacity', 'transformerBreakerRating', 'transformerVoltage',
-                                   'generatorCapacity', 'generatorBreakerRating', 
-                                   'inverterCapacity'];
-                
-                // Convert FormData to structured object with units
-                for (let [key, value] of formData.entries()) {
-                    if (key.includes('[]')) {
-                        const cleanKey = key.replace('[]', '');
-                        if (!data[cleanKey]) data[cleanKey] = [];
-                        data[cleanKey].push(value);
-                    } else {
-                        data[key] = value;
-                    }
-                }
-                
-                // Combine values with units for better Google Sheets formatting
-                const combinedData = {};
-                
-                // Copy all regular fields
-                for (const key in data) {
-                    if (!key.endsWith('Unit')) {
-                        combinedData[key] = data[key];
-                    }
-                }
-                
-                // Combine values with units for transformers
-                if (data.transformerCapacity && data.transformerCapacityUnit) {
-                    combinedData.transformers = [];
-                    for (let i = 0; i < data.transformerCapacity.length; i++) {
-                        combinedData.transformers.push({
-                            capacity: data.transformerCapacity[i] + ' ' + (data.transformerCapacityUnit[i] || 'KVA'),
-                            breakerRating: data.transformerBreakerRating[i] + ' ' + (data.transformerBreakerRatingUnit[i] || 'A'),
-                            voltage: data.transformerVoltage[i] + ' ' + (data.transformerVoltageUnit[i] || 'V')
-                        });
-                    }
-                }
-                
-                // Combine values with units for generators
-                if (data.generatorCapacity && data.generatorCapacityUnit) {
-                    combinedData.generators = [];
-                    for (let i = 0; i < data.generatorCapacity.length; i++) {
-                        combinedData.generators.push({
-                            capacity: data.generatorCapacity[i] + ' ' + (data.generatorCapacityUnit[i] || 'KVA'),
-                            breakerRating: data.generatorBreakerRating[i] + ' ' + (data.generatorBreakerRatingUnit[i] || 'A'),
-                            brand: data.generatorBrand[i] || ''
-                        });
-                    }
-                }
-                
-                // Combine values with units for inverters
-                if (data.inverterCapacity && data.inverterCapacityUnit) {
-                    combinedData.inverters = [];
-                    for (let i = 0; i < data.inverterCapacity.length; i++) {
-                        combinedData.inverters.push({
-                            capacity: data.inverterCapacity[i] + ' ' + (data.inverterCapacityUnit[i] || 'KW'),
-                            brand: data.inverterBrand[i] || '',
-                            model: data.inverterModel[i] || ''
-                        });
-                    }
-                }
-                
-                // Add timestamp and summary
-                combinedData.timestamp = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' });
-                combinedData.formSummary = `Site Survey: ${data.siteName || ''} - ${data.solutionType || ''}`;
-                
-                // Create a clean string representation for Google Sheets
-                const sheetsData = {
-                    // Basic info
-                    timestamp: combinedData.timestamp,
-                    siteName: combinedData.siteName || '',
-                    siteLocation: combinedData.siteLocation || '',
-                    vendorContactName: combinedData.vendorContactName || '',
-                    vendorContactNumber: combinedData.vendorContactNumber || '',
-                    vendorEmail: combinedData.vendorEmail || '',
-                    vendorCompany: combinedData.vendorCompany || '',
-                    vendorCompanyLocation: combinedData.vendorCompanyLocation || '',
-                    solutionType: combinedData.solutionType || '',
-                    otherSolution: combinedData.otherSolution || '',
-                    numTransformers: combinedData.numTransformers || '0',
-                    numGenerators: combinedData.numGenerators || '0',
-                    numInverters: combinedData.numInverters || '0',
-                    distWapdaToGen: combinedData.distWapdaToGen || '',
-                    distWapdaToInverter: combinedData.distWapdaToInverter || '',
-                    distGenToInverter: combinedData.distGenToInverter || '',
-                    distInverterToInverter: combinedData.distInverterToInverter || '',
-                    additionalDistances: combinedData.additionalDistances || '',
-                    additionalComments: combinedData.additionalComments || '',
-                    
-                    // Transformers with units
-                    transformers: combinedData.transformers ? 
-                        combinedData.transformers.map(t => 
-                            `Capacity: ${t.capacity}, Breaker: ${t.breakerRating}, Voltage: ${t.voltage}`
-                        ).join(' | ') : '',
-                    
-                    // Generators with units
-                    generators: combinedData.generators ? 
-                        combinedData.generators.map(g => 
-                            `Capacity: ${g.capacity}, Breaker: ${g.breakerRating}, Brand: ${g.brand}`
-                        ).join(' | ') : '',
-                    
-                    // Inverters with units
-                    inverters: combinedData.inverters ? 
-                        combinedData.inverters.map(i => 
-                            `Capacity: ${i.capacity}, Brand: ${i.brand}, Model: ${i.model}`
-                        ).join(' | ') : ''
-                };
-                
-                try {
-                    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDzTR6Z0DoCHwAlGCOFlaQ22cgKSQ1DIQv0RJ4gzVaAd-8nUUH0sPfmt2zVppV-JI_/exec';
-                    
-                    const response = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(sheetsData)
-                    });
-                    
-                    // Show success (no-cors means we can't read response, so assume success)
-                    setTimeout(() => {
-                        loadingOverlay.style.display = 'none';
-                        successMessage.style.display = 'block';
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = 'Submit Survey Form <i class="fas fa-paper-plane"></i>';
-                        
-                        // Scroll to success message
-                        successMessage.scrollIntoView({ behavior: 'smooth' });
-                        
-                        // Reset form after 5 seconds
-                        setTimeout(() => {
-                            this.reset();
-                            document.getElementById('transformersContainer').innerHTML = '';
-                            document.getElementById('generatorsContainer').innerHTML = '';
-                            document.getElementById('invertersContainer').innerHTML = '';
-                            updateProgress();
-                            successMessage.style.display = 'none';
-                        }, 5000);
-                    }, 2000);
-                    
-                } catch (error) {
-                    console.error('Error:', error);
                     loadingOverlay.style.display = 'none';
-                    errorMessage.style.display = 'block';
+                    successMessage.style.display = 'block';
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Submit Survey Form <i class="fas fa-paper-plane"></i>';
                     
-                    // Scroll to error message
-                    errorMessage.scrollIntoView({ behavior: 'smooth' });
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
                     
+                    // Reset form after 5 seconds
                     setTimeout(() => {
-                        errorMessage.style.display = 'none';
+                        this.reset();
+                        document.getElementById('transformersContainer').innerHTML = '';
+                        document.getElementById('generatorsContainer').innerHTML = '';
+                        document.getElementById('invertersContainer').innerHTML = '';
+                        updateProgress();
+                        successMessage.style.display = 'none';
                     }, 5000);
-                }
-            });
-
-            // Initialize
-            updateProgress();
-            
-            // Add floating buttons animation
-            document.querySelectorAll('.contact-btn').forEach(btn => {
-                btn.addEventListener('mouseenter', function() {
-                    this.querySelector('.contact-tooltip').style.opacity = '1';
-                    this.querySelector('.contact-tooltip').style.transform = 'translateX(0)';
-                });
+                }, 2000);
                 
-                btn.addEventListener('mouseleave', function() {
-                    this.querySelector('.contact-tooltip').style.opacity = '0';
-                    this.querySelector('.contact-tooltip').style.transform = 'translateX(10px)';
-                });
-            });
-
-            // Fix for logo URL
-            const logoImg = document.querySelector('.logo-container img');
-            if (logoImg) {
-                const originalSrc = logoImg.getAttribute('src');
-                if (originalSrc && originalSrc.includes(' ')) {
-                    logoImg.src = originalSrc.replace(' ', '%20');
-                }
+            } catch (error) {
+                console.error('Error:', error);
+                loadingOverlay.style.display = 'none';
+                errorMessage.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Survey Form <i class="fas fa-paper-plane"></i>';
+                
+                // Scroll to error message
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
+                
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
             }
-        </script>
-    </body>
+        });
+
+        // Initialize
+        updateProgress();
+        
+        // Add floating buttons animation
+        document.querySelectorAll('.contact-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.querySelector('.contact-tooltip').style.opacity = '1';
+                this.querySelector('.contact-tooltip').style.transform = 'translateX(0)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.querySelector('.contact-tooltip').style.opacity = '0';
+                this.querySelector('.contact-tooltip').style.transform = 'translateX(10px)';
+            });
+        });
+
+        // Fix for logo URL - encode space properly
+        const logoImg = document.querySelector('.logo-container img');
+        if (logoImg) {
+            // Replace space with %20 in the src
+            const originalSrc = logoImg.getAttribute('src');
+            if (originalSrc && originalSrc.includes(' ')) {
+                logoImg.src = originalSrc.replace(' ', '%20');
+            }
+        }
+    </script>
+</body>
 </html>
