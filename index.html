@@ -917,6 +917,25 @@
                 font-size: 16px;
             }
         }
+        
+        /* Validation Styles */
+        .error {
+            border-color: #dc2626 !important;
+            background-color: #fef2f2 !important;
+        }
+        
+        .error-message-text {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .error-message-text i {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -1073,10 +1092,6 @@
                         <span class="section-icon">6</span>
                         Inverter Details
                     </h2>
-                    <div class="required-note">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <strong>Important:</strong> If you don't have inverter details or don't know them, please enter "N/A" in the capacity and brand fields.
-                    </div>
                     <div class="form-group">
                         <label>Total Number of Inverters <span class="required">*</span></label>
                         <input type="number" name="numInverters" min="0" value="0" required onchange="updateInverters(this.value)">
@@ -1090,38 +1105,29 @@
                         <span class="section-icon">7</span>
                         Distance Between Sources (in meters)
                     </h2>
-                    <div class="required-note">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <strong>Important:</strong> If you don't know the exact distances, please enter "N/A" in the distance fields.
-                    </div>
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>WAPDA Incoming to Generator Incoming</label>
-                            <input type="text" name="distWapdaToGen" placeholder="Enter distance in meters or 'N/A'" required>
-                            <div class="field-help"><i class="fas fa-info-circle"></i> Enter distance in meters or 'N/A' if not known</div>
+                            <label>WAPDA Incoming to Generator Incoming <span class="required">*</span></label>
+                            <input type="text" name="distWapdaToGen" placeholder="Enter distance in meters" required>
                         </div>
                         <div class="form-group">
-                            <label>WAPDA Incoming to Inverter</label>
-                            <input type="text" name="distWapdaToInverter" placeholder="Enter distance in meters or 'N/A'" required>
-                            <div class="field-help"><i class="fas fa-info-circle"></i> Enter distance in meters or 'N/A' if not known</div>
+                            <label>WAPDA Incoming to Inverter <span class="required">*</span></label>
+                            <input type="text" name="distWapdaToInverter" placeholder="Enter distance in meters" required>
                         </div>
                     </div>
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>Generator to Inverter</label>
-                            <input type="text" name="distGenToInverter" placeholder="Enter distance in meters or 'N/A'" required>
-                            <div class="field-help"><i class="fas fa-info-circle"></i> Enter distance in meters or 'N/A' if not known</div>
+                            <label>Generator to Inverter <span class="required">*</span></label>
+                            <input type="text" name="distGenToInverter" placeholder="Enter distance in meters" required>
                         </div>
                         <div class="form-group">
-                            <label>Inverter to Other Inverter</label>
-                            <input type="text" name="distInverterToInverter" placeholder="Enter distance in meters or 'N/A'" required>
-                            <div class="field-help"><i class="fas fa-info-circle"></i> Enter distance in meters or 'N/A' if not known</div>
+                            <label>Inverter to Other Inverter <span class="required">*</span></label>
+                            <input type="text" name="distInverterToInverter" placeholder="Enter distance in meters" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Additional Distance Information</label>
-                        <textarea name="additionalDistances" rows="3" placeholder="Please specify any other distances between sources (e.g., Generator to Generator, specific panel distances, etc.) or enter 'N/A' if not known" required></textarea>
-                        <div class="field-help"><i class="fas fa-info-circle"></i> Enter additional distances or 'N/A' if not known</div>
+                        <textarea name="additionalDistances" rows="3" placeholder="Please specify any other distances between sources (e.g., Generator to Generator, specific panel distances, etc.)"></textarea>
                     </div>
                 </div>
 
@@ -1133,8 +1139,7 @@
                     </h2>
                     <div class="form-group">
                         <label>Any Special Requirements or Comments</label>
-                        <textarea name="additionalComments" rows="4" placeholder="Enter any special requirements, site constraints, or additional information that may be helpful for the survey" required></textarea>
-                        <div class="field-help"><i class="fas fa-info-circle"></i> This field is required. Please enter comments or 'N/A' if none</div>
+                        <textarea name="additionalComments" rows="4" placeholder="Enter any special requirements, site constraints, or additional information that may be helpful for the survey"></textarea>
                     </div>
                 </div>
 
@@ -1225,15 +1230,15 @@
                     <div class="grid-3">
                         <div class="form-group">
                             <label>Capacity (KVA) <span class="required">*</span></label>
-                            <input type="text" name="transformerCapacity[]" placeholder="e.g., 500 KVA or 'N/A'" required>
+                            <input type="text" name="transformerCapacity[]" placeholder="e.g., 500 KVA" required>
                         </div>
                         <div class="form-group">
                             <label>Incoming Breaker Rating <span class="required">*</span></label>
-                            <input type="text" name="transformerBreakerRating[]" placeholder="e.g., 630A or 'N/A'" required>
+                            <input type="text" name="transformerBreakerRating[]" placeholder="e.g., 630A" required>
                         </div>
                         <div class="form-group">
                             <label>Voltage Rating</label>
-                            <input type="text" name="transformerVoltage[]" placeholder="e.g., 11kV/400V or 'N/A'" required>
+                            <input type="text" name="transformerVoltage[]" placeholder="e.g., 11kV/400V">
                         </div>
                     </div>
                 `;
@@ -1254,15 +1259,15 @@
                     <div class="grid-3">
                         <div class="form-group">
                             <label>Capacity (KVA/KW) <span class="required">*</span></label>
-                            <input type="text" name="generatorCapacity[]" placeholder="e.g., 250 KVA or 'N/A'" required>
+                            <input type="text" name="generatorCapacity[]" placeholder="e.g., 250 KVA" required>
                         </div>
                         <div class="form-group">
                             <label>Incoming Breaker Rating <span class="required">*</span></label>
-                            <input type="text" name="generatorBreakerRating[]" placeholder="e.g., 400A or 'N/A'" required>
+                            <input type="text" name="generatorBreakerRating[]" placeholder="e.g., 400A" required>
                         </div>
                         <div class="form-group">
                             <label>Brand/Model</label>
-                            <input type="text" name="generatorBrand[]" placeholder="e.g., Cummins, Perkins or 'N/A'" required>
+                            <input type="text" name="generatorBrand[]" placeholder="e.g., Cummins, Perkins">
                         </div>
                     </div>
                 `;
@@ -1279,19 +1284,19 @@
                 const div = document.createElement('div');
                 div.className = 'dynamic-section';
                 div.innerHTML = `
-                    <h4>Inverter ${i} <span style="color: #dc2626; font-size: 14px;">(Required: Enter details or 'N/A')</span></h4>
+                    <h4>Inverter ${i}</h4>
                     <div class="grid-3">
                         <div class="form-group">
                             <label>Capacity (KW) <span class="required">*</span></label>
-                            <input type="text" name="inverterCapacity[]" placeholder="e.g., 50 KW or 'N/A'" required>
+                            <input type="text" name="inverterCapacity[]" placeholder="e.g., 50 KW" required>
                         </div>
                         <div class="form-group">
                             <label>Brand <span class="required">*</span></label>
-                            <input type="text" name="inverterBrand[]" placeholder="e.g., Huawei, SMA, Growatt or 'N/A'" required>
+                            <input type="text" name="inverterBrand[]" placeholder="e.g., Huawei, SMA, Growatt" required>
                         </div>
                         <div class="form-group">
                             <label>Model Number</label>
-                            <input type="text" name="inverterModel[]" placeholder="Model/Serial or 'N/A'" required>
+                            <input type="text" name="inverterModel[]" placeholder="Model/Serial">
                         </div>
                     </div>
                 `;
@@ -1337,94 +1342,159 @@
             window.print();
         }
 
-        // Form validation
+        // Form validation function
         function validateForm() {
             const form = document.getElementById('surveyForm');
-            const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
             let isValid = true;
             
-            // Check all required fields
-            requiredFields.forEach(field => {
+            // Clear previous errors
+            clearErrors();
+            
+            // 1. Check all basic required fields
+            const basicRequiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
+            basicRequiredFields.forEach(field => {
                 if (field.value.trim() === '') {
+                    markFieldError(field, 'This field is required');
                     isValid = false;
-                    field.style.borderColor = '#dc2626';
-                    field.style.boxShadow = '0 0 0 4px rgba(220, 38, 38, 0.15)';
-                    
-                    // Add error message
-                    if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('error-text')) {
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'error-text';
-                        errorDiv.style.color = '#dc2626';
-                        errorDiv.style.fontSize = '12px';
-                        errorDiv.style.marginTop = '5px';
-                        errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> This field is required. Please enter details or "N/A" if not known.';
-                        field.parentNode.appendChild(errorDiv);
-                    }
-                } else {
-                    field.style.borderColor = '#e2e8f0';
-                    field.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.05)';
-                    
-                    // Remove error message
-                    const errorDiv = field.parentNode.querySelector('.error-text');
-                    if (errorDiv) {
-                        errorDiv.remove();
-                    }
                 }
             });
             
-            // Check inverter details if number > 0
-            const numInverters = parseInt(document.querySelector('input[name="numInverters"]').value);
-            if (numInverters > 0) {
-                for(let i = 0; i < numInverters; i++) {
-                    const capacityField = document.querySelector(`input[name="inverterCapacity[]"]`);
-                    const brandField = document.querySelector(`input[name="inverterBrand[]"]`);
-                    
-                    if (capacityField && capacityField.value.trim() === '') {
+            // 2. Check if number of transformers > 0, then check transformer details
+            const numTransformers = parseInt(document.querySelector('input[name="numTransformers"]').value);
+            if (numTransformers > 0) {
+                const transformerCapacities = document.querySelectorAll('input[name="transformerCapacity[]"]');
+                const transformerBreakerRatings = document.querySelectorAll('input[name="transformerBreakerRating[]"]');
+                
+                transformerCapacities.forEach((field, index) => {
+                    if (field.value.trim() === '') {
+                        markFieldError(field, 'Transformer capacity is required');
                         isValid = false;
-                        capacityField.style.borderColor = '#dc2626';
-                        capacityField.style.boxShadow = '0 0 0 4px rgba(220, 38, 38, 0.15)';
                     }
-                    
-                    if (brandField && brandField.value.trim() === '') {
+                });
+                
+                transformerBreakerRatings.forEach((field, index) => {
+                    if (field.value.trim() === '') {
+                        markFieldError(field, 'Transformer breaker rating is required');
                         isValid = false;
-                        brandField.style.borderColor = '#dc2626';
-                        brandField.style.boxShadow = '0 0 0 4px rgba(220, 38, 38, 0.15)';
                     }
-                }
+                });
             }
             
+            // 3. Check if number of generators > 0, then check generator details
+            const numGenerators = parseInt(document.querySelector('input[name="numGenerators"]').value);
+            if (numGenerators > 0) {
+                const generatorCapacities = document.querySelectorAll('input[name="generatorCapacity[]"]');
+                const generatorBreakerRatings = document.querySelectorAll('input[name="generatorBreakerRating[]"]');
+                
+                generatorCapacities.forEach((field, index) => {
+                    if (field.value.trim() === '') {
+                        markFieldError(field, 'Generator capacity is required');
+                        isValid = false;
+                    }
+                });
+                
+                generatorBreakerRatings.forEach((field, index) => {
+                    if (field.value.trim() === '') {
+                        markFieldError(field, 'Generator breaker rating is required');
+                        isValid = false;
+                    }
+                });
+            }
+            
+            // 4. Check if number of inverters > 0, then check inverter details
+            const numInverters = parseInt(document.querySelector('input[name="numInverters"]').value);
+            if (numInverters > 0) {
+                const inverterCapacities = document.querySelectorAll('input[name="inverterCapacity[]"]');
+                const inverterBrands = document.querySelectorAll('input[name="inverterBrand[]"]');
+                
+                inverterCapacities.forEach((field, index) => {
+                    if (field.value.trim() === '') {
+                        markFieldError(field, 'Inverter capacity is required');
+                        isValid = false;
+                    }
+                });
+                
+                inverterBrands.forEach((field, index) => {
+                    if (field.value.trim() === '') {
+                        markFieldError(field, 'Inverter brand is required');
+                        isValid = false;
+                    }
+                });
+            }
+            
+            // 5. Check distance fields
+            const distanceFields = [
+                'distWapdaToGen',
+                'distWapdaToInverter',
+                'distGenToInverter',
+                'distInverterToInverter'
+            ];
+            
+            distanceFields.forEach(fieldName => {
+                const field = document.querySelector(`input[name="${fieldName}"]`);
+                if (field && field.value.trim() === '') {
+                    markFieldError(field, 'Distance information is required');
+                    isValid = false;
+                }
+            });
+            
             return isValid;
+        }
+
+        // Mark field as error
+        function markFieldError(field, message) {
+            field.classList.add('error');
+            
+            // Create error message element
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message-text';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            
+            // Insert after the field
+            field.parentNode.appendChild(errorDiv);
+        }
+
+        // Clear all errors
+        function clearErrors() {
+            // Remove error class from all fields
+            document.querySelectorAll('.error').forEach(field => {
+                field.classList.remove('error');
+            });
+            
+            // Remove all error messages
+            document.querySelectorAll('.error-message-text').forEach(errorMsg => {
+                errorMsg.remove();
+            });
         }
 
         // Form submission
         document.getElementById('surveyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Validate form first
+            // Clear previous errors and messages
+            clearErrors();
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Validate form
             if (!validateForm()) {
-                // Show error message
-                const errorMessage = document.getElementById('errorMessage');
-                errorMessage.innerHTML = '<i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i><br>❌ Please fill all required fields. Enter "N/A" for fields where information is not available.';
+                // Show validation error
+                errorMessage.innerHTML = '<i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i><br>❌ Please fill all required fields before submitting.';
                 errorMessage.style.display = 'block';
                 
-                // Scroll to error message
-                errorMessage.scrollIntoView({ behavior: 'smooth' });
-                
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
+                // Scroll to first error
+                const firstError = document.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 
                 return;
             }
             
             const submitBtn = document.getElementById('submitBtn');
             const loadingOverlay = document.getElementById('loadingOverlay');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Hide previous messages
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
             
             // Show loading
             submitBtn.disabled = true;
